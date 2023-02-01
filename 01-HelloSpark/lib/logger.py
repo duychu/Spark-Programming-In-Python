@@ -1,5 +1,8 @@
+from pyspark.sql import SparkSession
+
+
 class Log4j(object):
-    def __init__(self, spark):
+    def __init__(self, spark: SparkSession):
         root_class = "guru.learningjournal.spark.examples"
         conf = spark.sparkContext.getConf()
         app_name = conf.get("spark.app.name")

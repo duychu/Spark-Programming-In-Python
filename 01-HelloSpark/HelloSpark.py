@@ -2,6 +2,7 @@ import sys
 from pyspark.sql import *
 from lib.logger import Log4j
 from lib.utils import *
+import time
 
 if __name__ == "__main__":
     conf = get_spark_app_config()
@@ -10,8 +11,10 @@ if __name__ == "__main__":
         .builder \
         .appName("HelloSpark") \
         .master("local[2]") \
+        .config(conf=conf) \
+        .config("spark.driver.extraJavaOptions", "-Dlog4j.configuration=file:log4j.properties -Dspark.yarn.app.container.log.dir=app-logs -Dlogfile.name=hello-spark ") \
         .getOrCreate()
-
+    # spark.sparkContext.setLogLevel("INFO")
     logger = Log4j(spark)
 
     if len(sys.argv) != 2:
@@ -26,4 +29,5 @@ if __name__ == "__main__":
     count_df.show()
 
     logger.info("Finished HelloSpark")
+    # time.sleep(100)
     spark.stop()
